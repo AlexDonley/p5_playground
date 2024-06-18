@@ -1,102 +1,12 @@
-// MP3 VISUALIZATION PROJECT
-
-// var song;
-// var button;
-// var amp;
-// var mic;
-
-// var micBool = true;
-
-// function preload(){
-//     song = loadSound("hall.mp3");
-// }
-
-// function setup() {
-//     createCanvas(200, 200);
-//     button = createButton('play');
-//     button.mousePressed(togglePlaying);
-//     amp = new p5.Amplitude();
-// }
-
-// function togglePlaying() {
-//     if (micBool){
-//         startMic();
-//         micBool = false;
-//     }
-//     if (!song.isPlaying()) {
-//         song.play();
-//         button.html('pause');
-//     } else {
-//         song.pause();
-//         button.html('play');
-//     }
-// }
-
-// async function startMic() {
-//     mic = new p5.AudioIn();
-//     mic.start();
-// }
-
-// function draw() {
-//     background(0);
-
-//     var vol = mic.getLevel();
-//     var diam = map(vol, 0, 1, 10, 200);
-
-//     fill(0,255,0)
-//     ellipse(width/2, height/2, diam, diam);
-// }
-
-
-// MIC INPUT PROJECT
-
-// let mic;
-
-// function setup(){
-//   let cnv = createCanvas(100, 100);
-//   cnv.mousePressed(userStartAudio);
-//   cnv.style.position = "absolute";
-//   cnv.style.bottom = "0px";
-//   textAlign(CENTER);
-//   mic = new p5.AudioIn();
-//   mic.start();
-// }
-
-// function draw(){
-//   micLevel = mic.getLevel();
-//   let y = micLevel * height;
-//   if(y < 1){
-//     y = 0;
-//   }
-
-//   fill(0, 150, 0)
-//   noStroke();
-//   ellipse(width/2, height/2, width, height)
-
-//   fill(0, 255, 0);
-//   stroke(0, 255, 0);
-//   strokeWeight(height/50);
-  
-//   arc(width/2, height*3/5, width*.66, min(max(y*5, 0.00001), height*.66), 0, PI);
-
-//   noFill();
-//   arc(width/3, height/3, width/10, min(max(y*2, 0.00001), height/10), PI, 0) 
-//   arc(width*2/3, height/3, width/10, min(max(y*2, 0.00001), height/10), PI, 0) 
-
-// }
-
-
-// Coding Train / Daniel Shiffman
+// INITIAL CODE FROM Coding Train / Daniel Shiffman
 // Sound Visualization:  Frequency analysis with FFT
 
-// Code for https://www.youtube.com/watch?v=2O3nm0Nvbi4
-
-// "Just Like a Rainbow" by the Columbians (rainbow.mp3) can be downloaded from
-// https://github.com/CodingTrain/website-archive/blob/main/Tutorials/P5JS/p5.js_sound/17.1_playSong/rainbow.mp3
+const progressBar = document.getElementById('progressBar')
 
 const currentLevel = document.getElementById('currentLevel');
 const summativeLevel = document.getElementById('summativeLevel');
 let sumLev = 0;
+let limit = 100000;
 
 let micBool = false;
 
@@ -188,6 +98,8 @@ function draw() {
     let y = map(ampl, 0, 256, height, 0);
     rect(i*w, y, w, height - y);
   }
+
+  updateProgressBar();
   // Default length is 1024;
   // console.log(spectrum.length);
 
@@ -205,4 +117,17 @@ function draw() {
   //   //vertex(x, y);
   // }
   // //endShape();
+}
+
+function updateProgressBar() {
+  
+  percentage = sumLev / limit * 100;
+  
+  if (percentage <= 100) {
+    progressBar.style.height = percentage + "%"
+  }
+}
+
+function clearSum() {
+  sumLev = 0;
 }

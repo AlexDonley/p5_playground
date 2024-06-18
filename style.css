@@ -4,8 +4,18 @@ body {
     font-family: century gothic, sans-serif;
 }
 
-div {
-    font-size: 15vh;
+.score {
+    font-size: 10vh;
+}
+
+.progress {
+    position: absolute;
+    bottom: 0;
+    left: 80px;
+    width: 50px;
+    height: 100%;
+    background-color: limegreen;
+    z-index: -1;
 }
 
 button {
@@ -17,8 +27,8 @@ button {
 canvas {
     position: absolute; 
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 0%;
+    transform: translate(0%, -50%);
     height: 100vh;
     width: 100vh;
 }

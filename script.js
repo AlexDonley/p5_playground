@@ -5,8 +5,14 @@ const progressBar = document.getElementById('progressBar')
 
 const currentLevel = document.getElementById('currentLevel');
 const summativeLevel = document.getElementById('summativeLevel');
+const sliderVal = document.getElementById('sliderVal');
+const myRange = document.getElementById('myRange');
+
 let sumLev = 0;
-let limit = 100000;
+let limit = myRange.value;
+sliderVal.innerText = "/ " + limit;
+
+let pencilRotation = 0;
 
 let micBool = false;
 
@@ -25,16 +31,12 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowHeight, windowHeight);
+  createCanvas(windowHeight/2, windowHeight/2);
   colorMode(HSB);
   angleMode(DEGREES);
-  // plauseButton = createButton("plause");
-  // plauseButton.mousePressed(toggleSong);
-  // micButton = createButton("mic");
-  // micButton = mousePressed(toggleMic);
+
   amp = new p5.Amplitude();
-  mic = new p5.AudioIn();
-  // song.play();
+  // mic = new p5.AudioIn();
 
   // Set smoothing to 0, 256 bins
   fft = new p5.FFT(0.9, 64);
@@ -43,9 +45,9 @@ function setup() {
 
 function windowResized() {
   if (windowWidth > windowHeight) {
-    resizeCanvas(windowHeight, windowHeight);
+    resizeCanvas(windowHeight/2, windowHeight/2);
   } else {
-    resizeCanvas(windowWidth, windowWeight);
+    resizeCanvas(windowWidth/2, windowWidth/2);
   }
 }
 
@@ -64,9 +66,12 @@ function toggleMic() {
   if (micBool === true) {
     micBool = false;
     mic.stop();
+    mic = "";
   } else {
     song.stop();
+    mic = new p5.AudioIn();
     mic.start();
+    amp = new p5.Amplitude();
     micBool = true;
   }
   console.log(micBool);
@@ -99,35 +104,44 @@ function draw() {
     rect(i*w, y, w, height - y);
   }
 
+  sliderVal.innerText = "/ " + myRange.value;
   updateProgressBar();
-  // Default length is 1024;
-  // console.log(spectrum.length);
-
-  // translate(width / 2, height / 2);
-  // //beginShape();
-  // for (let i = 0; i < spectrum.length; i++) {
-  //   let angle = map(i, 0, spectrum.length, 0, 360);
-  //   let ampl = spectrum[i];
-  //   let r = map(ampl, 0, 256, 20, 100);
-  //   //fill(i, 255, 255);
-  //   let x = r * cos(angle);
-  //   let y = r * sin(angle);
-  //   stroke(i, 255, 255);
-  //   line(0, 0, x, y);
-  //   //vertex(x, y);
-  // }
-  // //endShape();
 }
 
 function updateProgressBar() {
+  let limit = myRange.value;
+  rawPercent = sumLev / limit * 100;
+  roundPercent = Math.round(rawPercent);
+  rotation = roundPercent * 4
+  updatePencilRotation();
   
-  percentage = sumLev / limit * 100;
-  
-  if (percentage <= 100) {
-    progressBar.style.height = percentage + "%"
+  if (rawPercent <= 100) {
+    progressBar.style.height = rawPercent + "%"
+    percentage.innerText = roundPercent + "%";
+  } else {
+    progressBar.style.height = 100 + "%"
+    percentage.innerText = 100 + "%";
   }
 }
 
+function updatePencilRotation() {
+  offset = rotation % 50 - 25;
+  starter = 60;
+  step = 20;
+
+  newGradient = "linear-gradient(90deg, " +
+      "hsl(56, 100%, " + (starter - (offset / 50 * step)) +"%) 0% " + (25 + offset) + "%, " +
+      "hsl(56, 100%, " + (starter - step - (offset / 50 * step)) + "%) " + (25 + offset) + "% " + (75 + offset) + "%, " +
+      "hsl(56, 100%, " + (starter - (2 * step) - (offset / 50 * step)) + "%) " + (75 + offset) + "% 100%)"
+
+  // console.log(newGradient)
+  progressBar.style.background = newGradient;
+}
+
 function clearSum() {
+  progressBar.style.transition = "height 0.5s ease-in-out"
   sumLev = 0;
+  removeTransition = setTimeout(function() {
+    progressBar.style.transition = ""
+  }, 500)
 }

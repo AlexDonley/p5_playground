@@ -4,24 +4,64 @@ body {
     font-family: century gothic, sans-serif;
 }
 
-.score {
+.percentage {
     font-size: 10vh;
+}
+
+.score {
+    font-size: 6vh;
+}
+
+.slider-val {
+    font-size: 5vh;
+}
+
+.progress-wrap {
+    height: 100%;
+    width: 50px;
+    position: absolute;
+    left: 25px;
+    bottom: 0;
+    z-index: -1;
+}
+
+.pencil-tip {
+    transform: translateY(-99px);
+    z-index: 1;
+    width: 100;
+    height: 100px;
+    background: conic-gradient(from 0.75turn at 50% 25%,
+                #222 180deg, 
+                brown 180deg, 240deg, 
+                tan, 300deg, 
+                brown 360deg);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
 }
 
 .progress {
     position: absolute;
     bottom: 0;
-    left: 80px;
-    width: 50px;
-    height: 100%;
-    background-color: limegreen;
-    z-index: -1;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(90deg, 
+                hsl(56, 100%, 50%) 0% 25%, 
+                hsl(56, 100%, 35%) 25% 75%, 
+                hsl(56, 100%, 20%) 75% 100%);
+}
+
+.control-panel {
+    position: absolute;
+    left: 100px;
 }
 
 button {
     height: 50px;
     width: 50px;
     border-radius: 50%;
+}
+
+.slider {
+    width: 300px;
 }
 
 canvas {

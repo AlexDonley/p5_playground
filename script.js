@@ -15,6 +15,7 @@ sliderVal.innerText = "/ " + limit;
 let pencilRotation = 0;
 
 let micBool = false;
+let beepBool = false;
 
 let mic;
 
@@ -37,6 +38,8 @@ function setup() {
 
   amp = new p5.Amplitude();
   // mic = new p5.AudioIn();
+
+  wave = new p5.Oscillator();  
 
   // Set smoothing to 0, 256 bins
   fft = new p5.FFT(0.9, 64);
@@ -75,6 +78,34 @@ function toggleMic() {
     micBool = true;
   }
   console.log(micBool);
+}
+
+function toggleBeep() {
+  if (beepBool){
+    beepBool = false;
+    
+    switch (wave.getType()) {
+      case 'sine':
+        wave.setType('square');
+        break;
+      case 'square':
+        wave.setType('triangle');
+        break;
+      case 'triangle':
+        wave.setType('sawtooth');
+        break;
+      case 'sawtooth':
+        wave.setType('sine');
+        break;
+    }
+    
+    wave.start();
+    wave.freq(Math.floor(Math.random() * 700) + 200);
+    wave.amp(.1);
+  } else {
+    beepBool = true;
+    wave.stop();
+  }
 }
 
 function draw() {
@@ -139,9 +170,9 @@ function updatePencilRotation() {
 }
 
 function clearSum() {
-  progressBar.style.transition = "height 0.5s ease-in-out"
+  // progressBar.style.transition = "height 0.5s ease-in-out"
   sumLev = 0;
-  removeTransition = setTimeout(function() {
-    progressBar.style.transition = ""
-  }, 500)
+  // removeTransition = setTimeout(function() {
+  //   progressBar.style.transition = ""
+  // }, 500)
 }
